@@ -1,0 +1,48 @@
+---
+title: "Stats Project"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+**Getting the data**
+
+```{r}
+
+library(car)
+library(leaps)
+library(lubridate)
+library(rvest)
+
+unemploymentrateincome <- read.csv("Unemployment.csv")
+povertyrate <- read.csv("PovertyRate.csv")
+mobility <- read.csv("Global_Mobility_Report.csv")
+infection <- read.csv("Infection_Rate.csv")
+votingtrends <- read.csv("Voting Trends.csv")
+popestimate <- read.csv("PopulationEstimates.csv")
+marriagerate <- read.csv("Married.csv")
+incarceration <- read.csv("Incar.csv")
+collegegrad <- read.csv("college.csv")
+
+url <- "http://www.usa.com/rank/new-york-state--population-density--county-rank.htm" 
+browseURL(url)
+webpage <- read_html(url) 
+popdensityHTML <- html_nodes(webpage, 'tr+ tr td:nth-child(2)')
+(popdensity <- html_text(rankingHTML)) 
+
+```
+
+**Data Cleaning**
+
+```{r}
+for(i in 1:64){
+  popdensity[i] <- popdensity[i+2]
+}
+popdensity2 <- na.omit(popdensity)
+popdensity2 <- gsub("/sq mi","",popdensity2)
+
+
+```
+
